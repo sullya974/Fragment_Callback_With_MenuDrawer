@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/nav_fragment_1"
+            android:title="Fragment 1"
+            android:icon="@drawable/ic_menu_01_24"/>
+        <item android:id="@+id/nav_fragment_2"
+            android:title="Fragment 2"
+            android:icon="@drawable/ic_menu_02_24"/>
+        <item android:id="@+id/nav_fragment_3"
+            android:title="Fragment 3"
+            android:icon="@drawable/ic_menu_03_24"/>
+    </group>
+
+    <item android:title="Settings">
+        <menu>
+            <item android:id="@+id/nav_fragment_4"
+                android:title="Fragment 4"
+                android:icon="@drawable/ic_menu_04_24"/>
+            <item android:id="@+id/nav_fragment_5"
+                android:title="Fragment 5"
+                android:icon="@drawable/ic_menu_05_24"/>
+        </menu>
+    </item>
+</menu>
