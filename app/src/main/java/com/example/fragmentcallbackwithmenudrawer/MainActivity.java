@@ -11,9 +11,11 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.fragmentcallbackwithmenudrawer.utils.Gol;
 import com.google.android.material.navigation.NavigationView;
@@ -39,8 +41,10 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        fragmentManager = getSupportFragmentManager();
         initUI();
         setSupportActionBar(toolbar);
+        listenToBackStack();
 
         //Options d'accessibilité
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -65,10 +69,6 @@ public class MainActivity extends AppCompatActivity
             navView.setCheckedItem(R.id.nav_fragment_1);
         }
 
-//        btn_addFragment.setOnClickListener(v -> {
-//            addFragment();
-//        });
-
         Gol.addLog(emplacement, "onCreate");
     }
 
@@ -78,9 +78,17 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+        // Ajout des infos pour la gestion du backStack
+        Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_container);
+        //Gestion du navigationDrawer
+        if(drawerLayout.isDrawerOpen(GravityCompat.START)){
             drawerLayout.closeDrawer(GravityCompat.START);
-        } else {
+        }else if(fragment != null){ // Gestion bouton retour dans le cadre d'un fragment
+            fragmentTransaction = fragmentManager.beginTransaction();
+            //Si fragment présent on le retire du backStack
+            fragmentTransaction.remove(fragment);
+            fragmentTransaction.commit();
+        }else{
             super.onBackPressed();
         }
     }
@@ -92,17 +100,46 @@ public class MainActivity extends AppCompatActivity
         btn_addFragment = findViewById(R.id.btn_addFragment);
     }
 
+    /**
+     * Affiche les fragments en fonction du nombre d'entrée de la pile
+     */
     private void addFragment() {
-        fragmentManager = getSupportFragmentManager();
+        //Appel du nouveau fragment
+//        Fragment fragment = new Fragment();
+//        switch (fragmentManager.getBackStackEntryCount()) { //Get the number of entries currently in the back stack
+//            case 0:
+//                fragment = new Fragment_01();
+//                break;
+//            case 1:
+//                fragment = new Fragment_02();
+//                break;
+//            case 2:
+//                fragment = new Fragment_03();
+//                break;
+//            default:
+//                fragment = new Fragment_01();
+//        }
+
+        // On récupère le fragment du container de l'activité
+        Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_container);
+        // Et en fonction on demande l'affichage
+        if(fragment instanceof Fragment_01){
+            fragment = new Fragment_02();
+        }else if(fragment instanceof Fragment_02){
+            fragment = new Fragment_03();
+        }else if(fragment instanceof Fragment_03){
+            fragment = new Fragment_01();
+        }else{
+            //par défaut
+            fragment = new Fragment_01();
+        }
+
         // Commencer la discution avec le fragment
         fragmentTransaction = fragmentManager.beginTransaction();
-        //Appel du nouveau fragment
-        Fragment_01 fragment_01 = new Fragment_01();
         // Ajouter au container de fragment
-        fragmentTransaction.add(R.id.fragment_container, fragment_01);
-
-        fragmentTransaction.addToBackStack("fragmentStack1");
-
+        fragmentTransaction.add(R.id.fragment_container, fragment);
+        // Enregistre l'endroit de la pile ou l'on se trouve au moment de l'ajout du fragment
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
 
@@ -173,5 +210,24 @@ public class MainActivity extends AppCompatActivity
     protected void onDestroy() {
         super.onDestroy();
         Gol.addLog(emplacement, "onDestroy");
+    }
+
+    /**
+     * Nous permet de connaître le nombre de fragment sauvegardés dans le backstack
+     * grâce à getBAckStackEntryCount()
+     */
+    private void listenToBackStack() {
+        TextView tvFragmentCount = findViewById(R.id.tv_fragmentCount);
+        //Affiche nombre fragment dans la pile
+        tvFragmentCount.setText("Nombre de fragment(s) enregistré(s) dans la pile " +
+                fragmentManager.getBackStackEntryCount());
+        //Ajout d'un listener pour écouer les changements dans le backstack
+        fragmentManager.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                tvFragmentCount.setText("Nombre de fragment(s) enregistré(s) dans la pile " +
+                        fragmentManager.getBackStackEntryCount());
+            }
+        });
     }
 }

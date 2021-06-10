@@ -33,28 +33,33 @@
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:gravity="center_horizontal">
 
             <Button
                 android:id="@+id/btn_addFragment"
-                android:onClick="btn_addFragment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Afficher les fragments"/>
+                android:onClick="btn_addFragment"
+                android:text="Afficher\nles fragments"
+                android:layout_marginRight="10dp"/>
 
             <Button
                 android:id="@+id/btn_countFragment"
-                android:onClick="btn_addFragment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Afficher les fragments"/>
+                android:onClick="btn_addFragment"
+                android:text="Afficher\nles fragments" />
         </androidx.appcompat.widget.LinearLayoutCompat>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Nb element in backstack"/>
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/tv_fragmentCount"
+            tools:text="Nb element in backstack" />
 
         <FrameLayout
             android:id="@+id/fragment_container"
