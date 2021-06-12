@@ -41,17 +41,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:onClick="btn_addFragment"
-                android:text="Afficher\nles fragments"
-                android:layout_marginRight="10dp"/>
+                android:text="Add"
+                android:layout_weight="1" />
 
             <Button
-                android:id="@+id/btn_countFragment"
+                android:id="@+id/btn_popFragment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:onClick="btn_addFragment"
-                android:text="Afficher\nles fragments" />
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:text="Pop" />
+            <Button
+                android:id="@+id/btn_removeFragment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:text="Remove" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <TextView
